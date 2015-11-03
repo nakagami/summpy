@@ -7,27 +7,6 @@ import tools
 
 tokenizer = Tokenizer()
 
-# 品詞,品詞細分類1,品詞細分類2,品詞細分類3,活用形,活用型,原形,読み,発音
-_mecab_feat_labels = 'pos cat1 cat2 cat3 conj conj_t orig read pron'.split(' ')
-
-
-def _mecab_parse_feat(feat):
-    return dict(zip(_mecab_feat_labels, feat.split(',')))
-
-
-def _mecab_node2seq(node, decode_surface=True, feat_dict=True,
-                    mecab_encoding='utf-8'):
-    # MeCab.Nodeはattributeを変更できない。
-    while node:
-        if decode_surface:
-            node._surface = node.surface.decode(mecab_encoding)
-        if feat_dict:  # 品詞の情報をdictで保存
-            node.feat_dict = _mecab_parse_feat(
-                node.feature.decode(mecab_encoding)
-            )
-        yield node
-        node = node.next
-
 
 def is_stopword(n):  # <- mecab node
     if len(n.surface) == 0:
@@ -48,11 +27,11 @@ def not_stopword(n):
     return not is_stopword(n)
 
 
-def _node2word(n):  # <- mecab node
+def _node2word(n):  # <- janome token node
     return n.surface
 
 
-def _node2norm_word(n):  # mecab node
+def _node2norm_word(n):  # janome token node
     if n.base_form != '*':
         return n.base_form
     else:
