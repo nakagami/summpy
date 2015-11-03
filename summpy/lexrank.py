@@ -11,6 +11,10 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import pairwise_distances
 
 import tools
+try:
+    import mecab_segmenter as segmenter
+except ImportError:
+    import janome_segmenter as segmenter
 
 
 def lexrank(sentences, sim_threshold=.1, alpha=0.9):
@@ -34,7 +38,7 @@ def lexrank(sentences, sim_threshold=.1, alpha=0.9):
     # sentence -> tf
     sent_tf_list = []
     for sent in sentences:
-        words = tools.word_segmenter_ja(sent)
+        words = segmenter.word_segmenter_ja(sent)
         tf = collections.Counter(words)
         sent_tf_list.append(tf)
 
