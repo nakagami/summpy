@@ -28,7 +28,7 @@ def not_stopword(n):
 
 
 def _node2word(n):  # <- janome token node
-    return n.surface
+    return n.surface.encode('utf-8')
 
 
 def _node2norm_word(n):  # janome token node
